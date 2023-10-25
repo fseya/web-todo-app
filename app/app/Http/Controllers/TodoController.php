@@ -8,18 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
-    /**
-     * TodoControllerの認証を有効にする
-     * middleware('auth')を指定することで、認証が必要なコントローラーになる
-     */
+    
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * ログインしているユーザーのTodoを表示する
-     */
+
     public function index(Request $request)
     {
         // DoneのTodoを表示するかどうか(Getパラメーターで判定)
@@ -36,7 +31,7 @@ class TodoController extends Controller
         }
 
         // compact関数を使うと、変数を配列にまとめて渡せる
-        // ref: https://qiita.com/ryo2132/items/63ced19601b3fa30e6de
+       
         return view('todo.index', compact('todos'));
     }
 
@@ -54,7 +49,7 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         // バリデーション
-        // ref: https://readouble.com/laravel/10.x/ja/validation.html
+       
         $request->validate([
             'title' => 'required|max:255',
         ]);
@@ -80,7 +75,7 @@ class TodoController extends Controller
         $todo = TodoItem::find($id);
 
         // compact関数を使うと、変数を配列にまとめて渡せる
-        // ref: https://qiita.com/ryo2132/items/63ced19601b3fa30e6de
+       
         return view('todo.show', compact('todo'));
     }
 
@@ -92,7 +87,7 @@ class TodoController extends Controller
         $todo = TodoItem::find($id);
 
         // compact関数を使うと、変数を配列にまとめて渡せる
-        // ref: https://qiita.com/ryo2132/items/63ced19601b3fa30e6de
+      
         return view('todo.edit', compact('todo'));
     }
 
@@ -102,12 +97,12 @@ class TodoController extends Controller
     public function update($id, Request $request)
     {
         // バリデーション
-        // ref: https://readouble.com/laravel/10.x/ja/validation.html
+       
         $request->validate([
             'title' => 'required|max:255',
         ]);
 
-        // 必要な項目だけを書き換えて保存する(※1)
+        // 必要な項目だけを書き換えて保存する
         $todo = TodoItem::find($id);
         $todo->title = $request->title;
         $todo->save();
@@ -131,7 +126,7 @@ class TodoController extends Controller
     {
         // updateメソッドを使うと、指定した項目だけを更新できる
         //  今回は、is_doneだけを更新する。
-        //  ※1とはまた別の更新方法なところにもポイント。同じ方法でも更新可能。
+        
         TodoItem::find($id)->update(['is_done' => true]);
 
         // route()で指定したURLにリダイレクトする
@@ -145,12 +140,11 @@ class TodoController extends Controller
     {
         // updateメソッドを使うと、指定した項目だけを更新できる
         //  今回は、is_doneだけを更新する。
-        //  ※1とはまた別の更新方法なところにもポイント。同じ方法でも更新可能。
+        
         TodoItem::find($id)->update(['is_done' => false]);
 
         // route()で指定したURLにリダイレクトする
-        //  第一引数には、ルーティング名を指定する
-        //  第二引数に配列でGetパラメーターを指定する
+        
         return redirect()->route('todo.index', ['done' => true]);
     }
 }

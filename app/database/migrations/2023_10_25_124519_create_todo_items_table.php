@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('todo_items', function (Blueprint $table) {
             $table->id();
 
-            // ここから追加
-            $table->foreignId('user_id') // 外部キーを追加
+            
+            $table->foreignId('user_id') 
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->text('title');
             $table->boolean('is_done')->default(false);
-            // ここまで追加
+            
             
             $table->timestamps();
         });
